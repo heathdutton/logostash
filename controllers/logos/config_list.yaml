@@ -1,0 +1,15 @@
+title: 'heathdutton.logostash::lang.plugin.logos'
+modelClass: HeathDutton\LogoStash\Models\Logo
+list: $/heathdutton/logostash/models/logo/columns.yaml
+recordUrl: 'heathdutton/logostash/logos/update/:id'
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: '100'
+showSetup: true
+showCheckboxes: true
+defaultSort:
+    column: employer_name
+    direction: asc
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'

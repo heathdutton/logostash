@@ -1,0 +1,12 @@
+name: 'heathdutton.logostash::lang.plugin.logos'
+modelClass: HeathDutton\LogoStash\Models\Logo
+form: $/heathdutton/logostash/models/logo/fields.yaml
+defaultRedirect: heathdutton/logostash/logos
+create:
+    title: 'Add Employer Logo'
+    redirect: 'heathdutton/logostash/logos/update/:id'
+    redirectClose: heathdutton/logostash/logos
+update:
+    title: 'Update Employer Logo'
+    redirect: heathdutton/logostash/logos
+    redirectClose: heathdutton/logostash/logos

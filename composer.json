@@ -1,0 +1,21 @@
+{
+    "name": "heathdutton/logostash",
+    "type": "october-plugin",
+    "description": "A utility plugin that stores logo locations for third parties.",
+    "homepage": "https://github.com/heathdutton/logostash",
+    "keywords": ["october", "octobercms", "logostash"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Heath Dutton",
+            "email": "heathdutton@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "composer/installers": "~1.0",
+        "guzzlehttp/guzzle": "^6.0"
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,28 @@
+fields:
+    employer_name:
+        label: 'Employer Name'
+        oc.commentPosition: ''
+        span: left
+        required: 1
+        type: text
+    logo_location:
+        label: 'Logo Location URL'
+        oc.commentPosition: ''
+        span: full
+        type: text
+    status:
+        label: 'heathdutton.logostash::lang.plugin.status'
+        span: auto
+        default: 1
+        disabled: 0
+        hidden: 0
+        dependsOn:
+            - logo_location
+        type: switch
+        comment: 'heathdutton.logostash::lang.plugin.status_comment'
+    auto_update:
+        label: 'heathdutton.logostash::lang.plugin.auto_update'
+        span: auto
+        default: 1
+        type: switch
+        comment: 'When enabled a new logo will be fetched when possible.'

@@ -1,0 +1,37 @@
+fields:
+    auto_update:
+        label: 'Enable logo updates'
+        span: auto
+        default: 1
+        type: switch
+        comment: 'When enabled new logos will be fetched when possible, even updating old logo locations when appropriate.'
+    auto_update_limit:
+        label: 'Logo update limit'
+        span: auto
+        default: 20
+        type: number
+        comment: 'Limit the maximum number of logos to update per minute.'
+    auto_update_attempt_limit:
+        label: 'Logo update attempt limit'
+        span: auto
+        default: 5
+        type: number
+        comment: 'Impose a limit to restrict the number of attempts when pulling new logos.'
+    api:
+        label: 'Enable public logo API'
+        span: auto
+        default: 1
+        type: switch
+        comment: 'This will automatically support logos by redirection at /api/logostash/{employer}'
+    glassdoor_partner_id:
+        label: 'GlassDoor partner ID'
+        span: left
+        required: 1
+        type: number
+        comment: 'Your partner id, as assigned by Glassdoor.'
+    glassdoor_partner_key:
+        label: 'GlassDoor partner key'
+        span: left
+        required: 1
+        type: text
+        comment: 'Your partner key, as assigned by Glassdoor.'

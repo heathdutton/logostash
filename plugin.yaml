@@ -1,0 +1,21 @@
+plugin:
+    name: 'heathdutton.logostash::lang.plugin.name'
+    description: 'heathdutton.logostash::lang.plugin.description'
+    author: 'Heath Dutton'
+    icon: oc-icon-cloud
+    homepage: 'https://heathdutton.com'
+permissions:
+    logostash_edit_employer_logos:
+        tab: 'heathdutton.logostash::lang.plugin.name'
+        label: 'heathdutton.logostash::lang.plugin.edit_logos'
+    logostash_edit_settings:
+        tab: 'heathdutton.logostash::lang.plugin.name'
+        label: 'heathdutton.logostash::lang.plugin.edit_settings'
+navigation:
+    logostash-logos:
+        label: 'heathdutton.logostash::lang.plugin.logos'
+        url: heathdutton/logostash/logos
+        icon: oc-icon-cloud
+        permissions:
+            - logostash_edit_employer_logos
+            - logostash_edit_settings

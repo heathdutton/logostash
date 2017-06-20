@@ -1,0 +1,4 @@
+title: 'heathdutton.logostash::lang.plugin.logos'
+modelClass: HeathDutton\LogoStash\Models\Logo
+toolbar:
+    buttons: reorder_toolbar

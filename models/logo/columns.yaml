@@ -1,0 +1,23 @@
+columns:
+    employer_name:
+        label: 'Employer Name'
+        type: text
+        searchable: true
+        sortable: true
+    logo_location:
+        label: 'heathdutton.logostash::lang.plugin.logo_location'
+        type: text
+        searchable: true
+        sortable: true
+    status:
+        label: 'Enabled'
+        type: switch
+        sortable: true
+    created_at:
+        label: Created
+        type: datetime
+        sortable: true
+    updated_at:
+        label: Updated
+        type: datetime
+        sortable: true
