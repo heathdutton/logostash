@@ -1,13 +1,11 @@
 fields:
     employer_name:
-        label: 'Employer Name'
-        oc.commentPosition: ''
+        label: 'heathdutton.logostash::lang.plugin.employer_name'
         span: left
         required: 1
         type: text
     logo_location:
-        label: 'Logo Location URL'
-        oc.commentPosition: ''
+        label: 'heathdutton.logostash::lang.plugin.logo_location'
         span: full
         type: text
     status:

@@ -1,6 +1,6 @@
 columns:
     employer_name:
-        label: 'Employer Name'
+        label: 'heathdutton.logostash::lang.plugin.employer_name'
         type: text
         searchable: true
         sortable: true
@@ -10,14 +10,14 @@ columns:
         searchable: true
         sortable: true
     status:
-        label: 'Enabled'
+        label: 'heathdutton.logostash::lang.plugin.status'
         type: switch
         sortable: true
     created_at:
-        label: Created
+        label: 'heathdutton.logostash::lang.plugin.created'
         type: datetime
         sortable: true
     updated_at:
-        label: Updated
+        label: 'heathdutton.logostash::lang.plugin.updated'
         type: datetime
         sortable: true

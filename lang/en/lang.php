@@ -1,6 +1,8 @@
 <?php return [
     'plugin' => [
         'name' => 'Logo Stash',
+        'created' => 'Created',
+        'updated' => 'Updated',
         'description' => 'Maintains a collection of employer logos, for use in other plugins and services.',
         'logos' => 'Logos',
         'edit_logos' => 'Edit Employer Logos',
