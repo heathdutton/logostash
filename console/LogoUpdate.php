@@ -52,24 +52,31 @@ class LogoUpdate extends Command
             ->get();
         $processed = [];
         if (!$logos) {
-            $this->info('No new logos to find.');
+            $this->info('No initial logos to find.');
         } else {
-            $this->info('New logos to find: ' . count($logos));
+            $this->info('Initial logos to find: ' . count($logos));
             foreach ($logos as $logo) {
                 // Normalize the employer name to reduce duplicates.
-                $logo->employer_name = EmployerHelper::normalize($logo->employer_name);
-
-                // Remove invalid employers.
-                if (!$logo->employer_name) {
-                    $logo->delete();
-                    continue;
+                $employer_name = EmployerHelper::normalize($logo->employer_name);
+                if ($logo->employer_name !== $employer_name) {
+                    // Remove invalid employers that would normalize to null.
+                    if (!$employer_name) {
+                        $logo->delete();
+                        continue;
+                    }
+                    // Remove this entry if it will normalize to a duplicate of another.
+                    if (Logo::where('employer_name', $employer_name)->first()) {
+                        $logo->delete();
+                        continue;
+                    }
                 }
+                $logo->employer_name = $employer_name;
 
                 // Fetch a logo.
                 $logo_location = $glassdoor->getEmployerLogo($logo->employer_name);
                 if ($logo_location) {
                     $logo->logo_location = $logo_location;
-                    $this->info('Found initial logo for "' . $logo->employer_name . '".');
+                    $this->info('Found initial logo for ' . $logo->employer_name);
                     // Reset attempts to 0 on success.
                     $logo->attempts = 0;
                 } else {
@@ -97,14 +104,20 @@ class LogoUpdate extends Command
             } else {
                 $this->info('Old logos to update: ' . count($logos));
                 foreach ($logos as $logo) {
-                    // Normalize the employer name to reduce duplicates.
-                    $logo->employer_name = EmployerHelper::normalize($logo->employer_name);
-
-                    // Remove invalid employers.
-                    if (!$logo->employer_name) {
-                        $logo->delete();
-                        continue;
+                    $employer_name = EmployerHelper::normalize($logo->employer_name);
+                    if ($logo->employer_name !== $employer_name) {
+                        // Remove invalid employers that would normalize to null.
+                        if (!$employer_name) {
+                            $logo->delete();
+                            continue;
+                        }
+                        // Remove this entry if it will normalize to a duplicate of another.
+                        if (Logo::where('employer_name', $employer_name)->first()) {
+                            $logo->delete();
+                            continue;
+                        }
                     }
+                    $logo->employer_name = $employer_name;
 
                     // Fetch a logo.
                     $logo_location = $glassdoor->getEmployerLogo($logo->employer_name);

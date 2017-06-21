@@ -64,9 +64,4 @@ class Logo extends Model
         return $query;
     }
 
-    public function byEmployer($employer)
-    {
-
-    }
-
 }
