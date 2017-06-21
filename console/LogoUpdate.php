@@ -18,7 +18,7 @@ class LogoUpdate extends Command
      * @var string
      */
     protected $name = 'heathdutton:logostash';
-    protected $signature = 'heathdutton:logostash {--timeout=55} {--limit=}';
+    protected $signature = 'heathdutton:logostash {--timeout=55} {--limit=} {--offset=}';
 
     /**
      * The console command description.
@@ -43,6 +43,7 @@ class LogoUpdate extends Command
         if ($limit_option !== null) {
             $auto_update_limit = min(intval($limit_option), 10000);
         }
+        $limit_offset = $this->option('offset');
 
         // Connect to Glassdoor.
         $glassdoor_partner_id = Settings::get('glassdoor_partner_id');
@@ -54,8 +55,11 @@ class LogoUpdate extends Command
         $glassdoor = new Glassdoor($glassdoor_partner_id, $glassdoor_partner_key);
 
         $auto_update_attempt_limit = intval(Settings::get('auto_update_attempt_limit', 5));
-        $logos = Logo::new($auto_update_limit, $auto_update_attempt_limit)
-            ->get();
+        $logos = Logo::new($auto_update_limit, $auto_update_attempt_limit);
+        if ($limit_offset) {
+            $logos->offset($limit_offset);
+        }
+        $logos = $logos->get();
         $processed = [];
         if (!$logos) {
             $this->info('No initial logos to attempt.');
@@ -104,9 +108,13 @@ class LogoUpdate extends Command
 
         // If time (and limits) allow, also update pre-existing entries.
         if (count($processed) < $auto_update_limit) {
-            $logos = Logo::old($auto_update_limit - count($processed), $auto_update_attempt_limit)
-                ->whereNotIn('id', $processed)
-                ->get();
+
+            $logos = Logo::old($auto_update_limit - count($processed), $auto_update_attempt_limit);
+            if ($limit_offset) {
+                $logos->offset($limit_offset);
+            }
+            $logos = $logos->whereNotIn('id', $processed)->get();
+
             if (!$logos) {
                 $this->info('No old logos to update.');
                 return;
