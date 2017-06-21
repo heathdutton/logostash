@@ -1,11 +1,14 @@
 <?php namespace HeathDutton\LogoStash\Services;
 
-// use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class Glassdoor
+ * @package HeathDutton\LogoStash\Services
+ */
 class Glassdoor
 {
 
@@ -23,7 +26,8 @@ class Glassdoor
      * @param $partner_id
      * @param $partner_key
      */
-    public function __construct($partner_id, $partner_key) {
+    public function __construct($partner_id, $partner_key)
+    {
         $this->partner_id = $partner_id;
         $this->partner_key = $partner_key;
     }
@@ -81,9 +85,11 @@ class Glassdoor
         if (!empty($body['response']['squareLogo'])) {
             // Use the square photo if defined.
             $result = $body['response']['squareLogo'];
-        } else if (!$strict && !empty($body['response']['overviewPhoto'])) {
-            // Fall back to cover photo if defined and there is no logo, strict is off.
-            $result = $body['response']['squareLogo'];
+        } else {
+            if (!$strict && !empty($body['response']['overviewPhoto'])) {
+                // Fall back to cover photo if defined and there is no logo, strict is off.
+                $result = $body['response']['squareLogo'];
+            }
         }
 
         return $result;

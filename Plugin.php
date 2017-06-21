@@ -3,11 +3,12 @@
 use System\Classes\PluginBase;
 use HeathDutton\LogoStash\Models\Settings;
 
+/**
+ * Class Plugin
+ * @package HeathDutton\LogoStash
+ */
 class Plugin extends PluginBase
 {
-    public function registerComponents()
-    {
-    }
 
     public function register()
     {
@@ -28,13 +29,13 @@ class Plugin extends PluginBase
     {
         return [
             'settings' => [
-                'label'       => 'Settings',
+                'label' => 'Settings',
                 'description' => 'Configure Logo Stash settings.',
-                'category'    => 'Logo Stash',
-                'icon'        => 'icon-cloud',
-                'class'       => 'HeathDutton\LogoStash\Models\Settings',
-                'order'       => 500,
-                'keywords'    => 'logo stash configure settings',
+                'category' => 'Logo Stash',
+                'icon' => 'icon-cloud',
+                'class' => 'HeathDutton\LogoStash\Models\Settings',
+                'order' => 500,
+                'keywords' => 'logo stash configure settings',
                 'permissions' => ['heathdutton.logostash::logostash_edit_settings']
             ]
         ];

@@ -5,7 +5,7 @@ use Model;
 use System\Classes\SettingsManager;
 
 /**
- * Class GlobalSettings
+ * Class Settings
  * @package HeathDutton\LogoStash\Models
  */
 class Settings extends Model

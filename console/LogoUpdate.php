@@ -7,6 +7,10 @@ use HeathDutton\LogoStash\Models\Settings;
 use HeathDutton\LogoStash\Models\Logo;
 use HeathDutton\LogoStash\Services\Glassdoor;
 
+/**
+ * Class LogoUpdate
+ * @package HeathDutton\LogoStash\Console
+ */
 class LogoUpdate extends Command
 {
     /**
@@ -23,6 +27,8 @@ class LogoUpdate extends Command
     protected $description = 'Updates logos in the logo stash.';
 
     /**
+     * Gets/updated logo entries in the database, prunes duplicates and invalid entries.
+     *
      * Execute the console command.
      * @return void
      */
@@ -35,7 +41,7 @@ class LogoUpdate extends Command
         $auto_update_limit = intval(Settings::get('auto_update_limit', 20));
         $limit_option = $this->option('limit');
         if ($limit_option !== null) {
-            $auto_update_limit = max(intval($limit_option), 10000);
+            $auto_update_limit = min(intval($limit_option), 10000);
         }
 
         // Connect to Glassdoor.
@@ -52,15 +58,18 @@ class LogoUpdate extends Command
             ->get();
         $processed = [];
         if (!$logos) {
-            $this->info('No initial logos to find.');
+            $this->info('No initial logos to attempt.');
         } else {
-            $this->info('Initial logos to find: ' . count($logos));
+
+            // Get initial logos for new entries.
+            $this->info('Initial logos to attempt: ' . count($logos));
             foreach ($logos as $logo) {
+                $processed[] = $logo->id;
                 // Normalize the employer name to reduce duplicates.
                 $employer_name = EmployerHelper::normalize($logo->employer_name);
                 if ($logo->employer_name !== $employer_name) {
                     // Remove invalid employers that would normalize to null.
-                    if (!$employer_name) {
+                    if (empty($employer_name)) {
                         $logo->delete();
                         continue;
                     }
@@ -84,7 +93,6 @@ class LogoUpdate extends Command
                 }
                 $logo->updated_at = new Carbon;
                 $logo->save();
-                $processed[] = $logo->id;
 
                 // Break if we are close to the nest scheduled cron run.
                 if ($timeout && time() - $start_time > $timeout) {
@@ -94,6 +102,7 @@ class LogoUpdate extends Command
             }
         }
 
+        // If time (and limits) allow, also update pre-existing entries.
         if (count($processed) < $auto_update_limit) {
             $logos = Logo::old($auto_update_limit - count($processed), $auto_update_attempt_limit)
                 ->whereNotIn('id', $processed)
@@ -104,10 +113,11 @@ class LogoUpdate extends Command
             } else {
                 $this->info('Old logos to update: ' . count($logos));
                 foreach ($logos as $logo) {
+                    $processed[] = $logo->id;
                     $employer_name = EmployerHelper::normalize($logo->employer_name);
                     if ($logo->employer_name !== $employer_name) {
                         // Remove invalid employers that would normalize to null.
-                        if (!$employer_name) {
+                        if (empty($employer_name)) {
                             $logo->delete();
                             continue;
                         }
@@ -131,7 +141,6 @@ class LogoUpdate extends Command
                     }
                     $logo->updated_at = new Carbon;
                     $logo->save();
-                    $processed[] = $logo->id;
 
                     // Break if we are close to the nest scheduled cron run.
                     if ($timeout && time() - $start_time > $timeout) {
