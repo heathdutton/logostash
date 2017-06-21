@@ -11,7 +11,7 @@ class BuilderTableCreateHeathduttonLogostashEmployer extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
-            $table->string('employer_name', 255)->nullable()->unsigned(false)->default(null);
+            $table->string('employer_name', 255)->nullable()->unsigned(false)->default(null)->unique();
             $table->string('logo_location', 1024)->nullable()->unsigned(false)->default(null);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();

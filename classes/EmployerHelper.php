@@ -39,6 +39,9 @@ class EmployerHelper
 
         // Truncate extra whitespace.
         $employer = trim(preg_replace('/\s+/', ' ', $employer));
+
+        // Shorten to 255 character maximum (DB constraint).
+        $employer = substr($employer, 0, 255);
         return $employer;
     }
 

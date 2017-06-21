@@ -14,7 +14,7 @@ class LogoUpdate extends Command
      * @var string
      */
     protected $name = 'heathdutton:logostash';
-    protected $signature = 'heathdutton:logostash {--timeout=55}';
+    protected $signature = 'heathdutton:logostash {--timeout=55} {--limit=}';
 
     /**
      * The console command description.
@@ -33,9 +33,9 @@ class LogoUpdate extends Command
         $start_time = time();
 
         $auto_update_limit = intval(Settings::get('auto_update_limit', 20));
-        if (!$auto_update_limit) {
-            $this->warning('Auto updating of logos is enabled, but the limit of logos to update is 0.');
-            return;
+        $limit_option = $this->option('limit');
+        if ($limit_option !== null) {
+            $auto_update_limit = max(intval($limit_option), 10000);
         }
 
         // Connect to Glassdoor.
@@ -69,9 +69,11 @@ class LogoUpdate extends Command
                 $logo_location = $glassdoor->getEmployerLogo($logo->employer_name);
                 if ($logo_location) {
                     $logo->logo_location = $logo_location;
-                    $this->info('Found first logo for "' . $logo->employer_name . '".');
+                    $this->info('Found initial logo for "' . $logo->employer_name . '".');
                     // Reset attempts to 0 on success.
                     $logo->attempts = 0;
+                } else {
+                    $logo->attempts++;
                 }
                 $logo->updated_at = new Carbon;
                 $logo->save();
@@ -111,6 +113,8 @@ class LogoUpdate extends Command
                         $this->info('Found updated logo for "' . $logo->employer_name . '".');
                         // Reset attempts to 0 on success.
                         $logo->attempts = 0;
+                    } elseif (!$logo_location) {
+                        $logo->attempts++;
                     }
                     $logo->updated_at = new Carbon;
                     $logo->save();

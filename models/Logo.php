@@ -28,15 +28,18 @@ class Logo extends Model
      * @param int $attempts
      * @return mixed
      */
-    public function scopeNew($query, $limit = 100, $attempts = 5)
+    public function scopeNew($query, $limit = 20, $attempts = 5)
     {
-        return $query->where('status', 1)
+        $query->where('status', 1)
             ->where('auto_update', 1)
-            ->where('logo_location', '')
+            ->whereNull('logo_location')
             ->where('attempts', '<', $attempts)
             ->orderBy('updated_at', 'asc')
-            ->orderBy('attempts', 'asc')
-            ->take($limit);
+            ->orderBy('attempts', 'asc');
+        if ($limit) {
+            $query->take($limit);
+        }
+        return $query;
     }
 
     /**
@@ -47,18 +50,22 @@ class Logo extends Model
      * @param int $attempts
      * @return mixed
      */
-    public function scopeOld($query, $limit = 100, $attempts = 5)
+    public function scopeOld($query, $limit = 20, $attempts = 5)
     {
-        return $query->where('status', 1)
+        $query->where('status', 1)
             ->where('auto_update', 1)
-            ->where('logo_location', '!=', '')
+            ->whereNotNull('logo_location')
             ->where('attempts', '<', $attempts)
             ->orderBy('updated_at', 'asc')
-            ->orderBy('attempts', 'asc')
-            ->take($limit);
+            ->orderBy('attempts', 'asc');
+        if ($limit) {
+            $query->take($limit);
+        }
+        return $query;
     }
 
-    public function byEmployer($employer) {
+    public function byEmployer($employer)
+    {
 
     }
 
