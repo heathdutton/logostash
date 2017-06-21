@@ -78,7 +78,7 @@ class Logo extends Model
      *      The default location for the logo to fall back on, if one cannot be found.
      * @return mixed
      */
-    public function getLocation($employer, $logo_location)
+    public function getLocation($employer, $logo_location = '/plugins/heathdutton/logostash/assets/default.jpg')
     {
         // Normalize the employer name.
         $employer = EmployerHelper::normalize($employer);
