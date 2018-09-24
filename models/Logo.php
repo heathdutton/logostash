@@ -85,7 +85,7 @@ class Logo extends Model
         if ($employer) {
             // Check if we already have this logo in the database.
             $logo = $this->where('employer_name', $employer)->first();
-            if (count($logo)) {
+            if ( !is_null($logo) && $logo->exists() ) {
                 // Logo entry exists, but may not have a location yet, or may be disabled.
                 if (!empty($logo->logo_location) && $logo->status) {
                     // Logo location is known and active, we can redirect to it permanently.
